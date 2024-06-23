@@ -1,58 +1,54 @@
-using System;
+using System.Linq;
+using BookToggles.BookHandlers;
 using HarmonyLib;
 
 namespace BookToggles.Patches
 {
     class UseBookPatch
     {
+        private static IBookHandler[] _bookHandlers = { new BugBookHandler(), new FishBookHandler() };
+
         /// <summary>
-        /// <see cref="closeBook"/> can be called when the user never opened a
-        /// book in the first place, such as when switching items. So this
-        /// field exists to track whether the user opened the book, allowing
-        /// us to skip other events.
+        /// Checks to see if the mod can handle overriding the behavior of a
+        /// book and does so if it can.
         /// </summary>
-        private static bool _bookWasOpened;
-
-        private static bool _isBugBookOpen;
-
         [HarmonyPatch(typeof(UseBook), nameof(UseBook.openBook))]
         [HarmonyPrefix]
-        static bool openBook()
+        static bool openBook(UseBook __instance, CharMovement ___myChar)
         {
-            Plugin.Logger.LogInfo("You opened a book!");
-            _bookWasOpened = true;
-            return true;
+            if (___myChar == null || !___myChar.isLocalPlayer) return true;
+
+            IBookHandler handler = _bookHandlers.FirstOrDefault(h => h.canHandleBook(__instance));
+            if (handler == null)
+            {
+                Plugin.Logger.LogInfo("No handler found for book using default openBook behavior");
+                return true;
+            }
+
+            Plugin.Logger.LogInfo($"Handler found for {handler.Name} book, toggling book");
+            handler.toggleBook(__instance);
+            return false;
         }
 
+        /// <summary>
+        /// Checks to see if the mod can handle overriding the behavior of a
+        /// book and blocks the default close behavior if it can.
+        /// </summary>
         [HarmonyPatch(typeof(UseBook), nameof(UseBook.closeBook))]
         [HarmonyPrefix]
         static bool closeBook(UseBook __instance, CharMovement ___myChar)
         {
             if (___myChar == null || !___myChar.isLocalPlayer) return true;
 
-            // skip the book close logic altogether if this wasn't triggered by a book opening
-            if (!_bookWasOpened) return false;
-            _bookWasOpened = false;
-
-            Plugin.Logger.LogInfo("You closed a book!");
-
-            if (__instance.isBugBook)
+            IBookHandler handler = _bookHandlers.FirstOrDefault(h => h.canHandleBook(__instance));
+            if (handler == null)
             {
-                if (_isBugBookOpen)
-                {
-                    Plugin.Logger.LogInfo("And we'll let it close!");
-                    _isBugBookOpen = false;
-                    return true;
-                }
-                else if (AnimalManager.manage.bugBookOpen)
-                {
-                    Plugin.Logger.LogInfo("But we'll keep it open for you!");
-                    _isBugBookOpen = true;
-                    return false;
-                }
+                Plugin.Logger.LogInfo("No handler found for book using default closeBook behavior");
+                return true;
             }
 
-            return true;
+            Plugin.Logger.LogInfo($"Handler found for {handler.Name} book, doing nothing");
+            return false;
         }
     }
 }
