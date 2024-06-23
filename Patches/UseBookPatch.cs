@@ -1,13 +1,11 @@
 using System.Linq;
-using BookToggles.BookHandlers;
+using BookToggles.Handlers;
 using HarmonyLib;
 
 namespace BookToggles.Patches
 {
     class UseBookPatch
     {
-        private static IBookHandler[] _bookHandlers = { new BugBookHandler(), new FishBookHandler() };
-
         /// <summary>
         /// Checks to see if the mod can handle overriding the behavior of a
         /// book and does so if it can.
@@ -18,7 +16,7 @@ namespace BookToggles.Patches
         {
             if (___myChar == null || !___myChar.isLocalPlayer) return true;
 
-            IBookHandler handler = _bookHandlers.FirstOrDefault(h => h.canHandleBook(__instance));
+            IBookHandler handler = BookHandlers.Handlers.FirstOrDefault(h => h.canHandleBook(__instance));
             if (handler == null)
             {
                 Plugin.Logger.LogInfo("No handler found for book using default openBook behavior");
@@ -26,7 +24,7 @@ namespace BookToggles.Patches
             }
 
             Plugin.Logger.LogInfo($"Handler found for {handler.Name} book, toggling book");
-            handler.toggleBook(__instance);
+            handler.toggleBook();
             return false;
         }
 
@@ -40,7 +38,7 @@ namespace BookToggles.Patches
         {
             if (___myChar == null || !___myChar.isLocalPlayer) return true;
 
-            IBookHandler handler = _bookHandlers.FirstOrDefault(h => h.canHandleBook(__instance));
+            IBookHandler handler = BookHandlers.Handlers.FirstOrDefault(h => h.canHandleBook(__instance));
             if (handler == null)
             {
                 Plugin.Logger.LogInfo("No handler found for book using default closeBook behavior");

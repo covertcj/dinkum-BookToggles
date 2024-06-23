@@ -1,4 +1,4 @@
-namespace BookToggles.BookHandlers
+namespace BookToggles.Handlers
 {
     class BugBookHandler : IBookHandler
     {
@@ -11,11 +11,19 @@ namespace BookToggles.BookHandlers
             return book.isBugBook;
         }
 
-        public void toggleBook(UseBook book)
+        public void toggleBook()
         {
             _isBookOpen = !_isBookOpen;
             AnimalManager.manage.bugBookOpen = _isBookOpen;
             AnimalManager.manage.lookAtBugBook.Invoke();
+        }
+
+        public void closeBook()
+        {
+            if (_isBookOpen)
+            {
+                toggleBook();
+            }
         }
     }
 }
