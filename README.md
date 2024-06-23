@@ -1,4 +1,4 @@
-# BootToggles
+# BookToggles
 
 Makes the bug and fish books toggleable so that you can switch to other tools
 without loosing the benefits of having the book. Currently, the book will stay
