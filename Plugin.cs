@@ -29,7 +29,7 @@ namespace BookToggles
             }
 
             Harmony.CreateAndPatchAll(typeof(UseBookPatch));
-            Harmony.CreateAndPatchAll(typeof(WorldManagerPatch));
+            Harmony.CreateAndPatchAll(typeof(CharPickUpPatch));
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
     }
