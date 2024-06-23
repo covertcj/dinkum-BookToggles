@@ -18,7 +18,8 @@ namespace BookToggles.Handlers
         /// Open the book if its closed, and close it if its open.
         /// </summary>
         /// <param name="book">The book to toggle</param>
-        void toggleBook();
+        /// <returns>True if the book was opened, false if it was closed</returns>
+        bool toggleBook();
 
         /// <summary>
         /// Used to force close a book for cases like when a user goes to bed.

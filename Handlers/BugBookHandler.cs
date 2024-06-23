@@ -11,11 +11,12 @@ namespace BookToggles.Handlers
             return book.isBugBook;
         }
 
-        public void toggleBook()
+        public bool toggleBook()
         {
             _isBookOpen = !_isBookOpen;
             AnimalManager.manage.bugBookOpen = _isBookOpen;
             AnimalManager.manage.lookAtBugBook.Invoke();
+            return _isBookOpen;
         }
 
         public void closeBook()

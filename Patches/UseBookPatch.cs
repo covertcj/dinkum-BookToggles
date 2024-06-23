@@ -24,7 +24,9 @@ namespace BookToggles.Patches
             }
 
             Plugin.Logger.LogInfo($"Handler found for {handler.Name} book, toggling book");
-            handler.toggleBook();
+            bool isOpen = handler.toggleBook();
+            NotificationManager.manage.createChatNotification($"You've {(isOpen ? "opened" : "closed")} your {handler.Name} book");
+
             return false;
         }
 
