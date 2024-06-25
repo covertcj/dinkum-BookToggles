@@ -16,7 +16,7 @@ namespace BookToggles.Patches
         {
             if (___myChar == null || !___myChar.isLocalPlayer) return true;
 
-            IBookHandler handler = BookHandlers.Handlers.FirstOrDefault(h => h.canHandleBook(__instance));
+            IBookHandler handler = BookHandlers.Handlers.FirstOrDefault(h => h.CanHandleBook(__instance));
             if (handler == null)
             {
                 Plugin.Logger.LogInfo("No handler found for book using default openBook behavior");
@@ -24,7 +24,7 @@ namespace BookToggles.Patches
             }
 
             Plugin.Logger.LogInfo($"Handler found for {handler.Name} book, toggling book");
-            bool isOpen = handler.toggleBook();
+            bool isOpen = handler.ToggleBook();
             NotificationManager.manage.createChatNotification($"You've {(isOpen ? "opened" : "closed")} your {handler.Name} book");
 
             return false;
@@ -40,7 +40,7 @@ namespace BookToggles.Patches
         {
             if (___myChar == null || !___myChar.isLocalPlayer) return true;
 
-            IBookHandler handler = BookHandlers.Handlers.FirstOrDefault(h => h.canHandleBook(__instance));
+            IBookHandler handler = BookHandlers.Handlers.FirstOrDefault(h => h.CanHandleBook(__instance));
             if (handler == null)
             {
                 Plugin.Logger.LogInfo("No handler found for book using default closeBook behavior");

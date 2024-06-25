@@ -6,12 +6,12 @@ namespace BookToggles.Handlers
 
         public string Name => "Bug";
 
-        public bool canHandleBook(UseBook book)
+        public bool CanHandleBook(UseBook book)
         {
             return book.isFishBook;
         }
 
-        public bool toggleBook()
+        public bool ToggleBook()
         {
             _isBookOpen = !_isBookOpen;
             AnimalManager.manage.fishBookOpen = _isBookOpen;
@@ -19,11 +19,11 @@ namespace BookToggles.Handlers
             return _isBookOpen;
         }
 
-        public void closeBook()
+        public void CloseBook()
         {
             if (_isBookOpen)
             {
-                toggleBook();
+                ToggleBook();
             }
         }
     }

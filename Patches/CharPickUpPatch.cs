@@ -15,7 +15,7 @@ namespace BookToggles.Patches
         [HarmonyPrefix]
         static bool confirmSleep()
         {
-            Array.ForEach(BookHandlers.Handlers, h => h.closeBook());
+            Array.ForEach(BookHandlers.Handlers, h => h.CloseBook());
             return true;
         }
     }
