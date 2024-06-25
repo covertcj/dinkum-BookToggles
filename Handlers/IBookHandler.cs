@@ -26,5 +26,10 @@ namespace BookToggles.Handlers
         /// </summary>
         /// <param name="book">The book to close</param>
         void CloseBook();
+
+        /// <summary>
+        /// Re-open the book if its already open to refresh the tooltip data.
+        /// </summary>
+        void RefreshBook();
     }
 }

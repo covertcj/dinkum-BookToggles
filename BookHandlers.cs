@@ -4,6 +4,12 @@ namespace BookToggles
 {
     static class BookHandlers
     {
-        public static IBookHandler[] Handlers = { new BugBookHandler(), new FishBookHandler() };
+        public static BugBookHandler BugBookHandler = new BugBookHandler();
+        public static FishBookHandler FishBookHandler = new FishBookHandler();
+
+        public static IBookHandler[] Handlers = {
+            BugBookHandler,
+            FishBookHandler
+        };
     }
 }

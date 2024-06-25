@@ -26,5 +26,14 @@ namespace BookToggles.Handlers
                 ToggleBook();
             }
         }
+
+        public void RefreshBook()
+        {
+            if (_isBookOpen)
+            {
+                ToggleBook();
+                ToggleBook();
+            }
+        }
     }
 }
